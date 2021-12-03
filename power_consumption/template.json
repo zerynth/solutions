@@ -1,0 +1,192 @@
+{
+    "version": "v1.0.0",
+    "type": "power_consumption",
+    "solution": [
+        {
+            "id": "name",
+            "label": {
+                "eng": "Solution Name",
+                "ita": "Nome Solution"
+            },
+            "type": "text",
+            "required": true
+        },
+        {
+            "id": "description",
+            "label": {
+                "eng": "Description",
+                "ita": "Descrizione"
+            },
+            "type": "text",
+            "required": true
+        },
+        {
+            "id": "alarm_email",
+            "label": {
+                "eng": "Alarm e-mail",
+                "ita": "Indirizzo e-mail allarmi"
+            },
+            "type": "text",
+            "required": false
+        }
+    ],
+    "device": [
+        {
+            "id": "machine_name",
+            "label": {
+                "eng": "Machine name",
+                "ita": "Nome macchinario"
+            },
+            "type": "text",
+            "required": true
+        },
+        {
+            "id": "description",
+            "label": {
+                "eng": "Machine description",
+                "ita": "Descrizione macchina"
+            },
+            "type": "text"
+        },
+        {
+            "id": "machine_voltage",
+            "label": {
+                "eng": "Machine voltage",
+                "ita": "Voltaggio macchine"
+            },
+            "type": "select",
+            "options": [
+                {
+                    "label": "220V",
+                    "value": "220"
+                },
+                {
+                    "label": "380V",
+                    "value": "380"
+                }
+            ],
+            "default_value": "220",
+            "required": true
+        }
+    ],
+    "sensors": {
+        "current": {
+            "label": {
+                "eng": "Current probe",
+                "ita": "Sonda di corrente"
+            },
+            "inputs": [
+                {
+                    "id": "name",
+                    "label": {
+                        "eng": "Name",
+                        "ita": "Nome"
+                    },
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "id": "current_range",
+                    "label": {
+                        "eng": "Current Range (A)",
+                        "ita": "Range di Corrente (A)"
+                    },
+                    "type": "select",
+                    "options": [
+                        {
+                            "label": "0-50A",
+                            "value": "0-50"
+                        },
+                        {
+                            "label": "0-100A",
+                            "value": "0-100"
+                        }
+                    ],
+                    "default_value": "0-100",
+                    "dependency_value": {
+                        "0-50": 3000,
+                        "0-100": 3000
+                    },
+                    "dependency": "ratio",
+                    "required": true
+                },
+                {
+                    "id": "ratio",
+                    "label": {
+                        "eng": "Ratio",
+                        "ita": "Ratio"
+                    },
+                    "type": "number",
+                    "required": true,
+                    "hidden": true
+                },
+                {
+                    "id": "n_coil",
+                    "label": {
+                        "eng": "Wire Coils",
+                        "ita": "Spire"
+                    },
+                    "type": "number",
+                    "required": true
+                },
+                {
+                    "id": "upper_alarm_threshold",
+                    "label": {
+                        "eng": "Max Current Alarm Threshold (A)",
+                        "ita": "Soglia Allarme Corrente Max. (A)"
+                    },
+                    "type": "number",
+                    "required": true
+                },
+                {
+                    "id": "lower_alarm_threshold",
+                    "label": {
+                        "ita": "Consumo Macchina Spenta (A)",
+                        "eng": "Machine Off Current Consumption (A)"
+                    },
+                    "type": "number",
+                    "min": 3,
+                    "required": true
+                },
+                {
+                    "id": "alarm_hysteresis",
+                    "label": {
+                        "eng": "Alarm Hysteresis (s)",
+                        "ita": "Isteresi Allarme (s)"
+                    },
+                    "type": "number",
+                    "required": true
+                }
+            ]
+        }
+    },
+    "zfs": {
+        "files": [
+            {
+                "name":"sensors.json",
+                "template": "sensors.template",
+                "folder":"zfs",
+                "upload": true
+            },
+            {
+                "name":"config.json",
+                "template": "config.template",
+                "folder":"zfs",
+                "upload": true
+            },
+            {
+                "name":"alarms.json",
+                "template": "alarms.template",
+                "folder":"zfs",
+                "upload": true
+            },
+            {
+                "name":"net.json",
+                "template": "net.template",
+                "folder":"",
+                "upload": false
+            }
+        ]
+    }
+
+}
