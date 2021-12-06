@@ -1,0 +1,16 @@
+{
+    {{#values}}
+    "{{alarm}}": {
+            "tag": "{{alarm}}",
+            "enabled": 1,
+            "level": 0,
+            "function": "out_of_range",
+            "condition": "delayed",
+            "max": {{max}},
+            "min": {{min}},
+            "delay_open": {{delay}},
+            "delay_close": {{delay}}
+        }
+    }{{^last}}, {{/last}}
+    {{/values}}
+}
