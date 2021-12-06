@@ -7,7 +7,7 @@
     "alarms": {
         "C1": "a1",
         "C2": "a2",
-        "C3": "a3",
+        "C3": "a3"
     },
     "periods": {
         "acquisition": 1000,
