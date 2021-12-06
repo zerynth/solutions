@@ -10,7 +10,6 @@
             "min": {{min}},
             "delay_open": {{delay}},
             "delay_close": {{delay}}
-        }
     }{{^last}}, {{/last}}
     {{/values}}
 }
