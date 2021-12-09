@@ -1,0 +1,24 @@
+{
+    {{#values}}
+    "{{channel}}": {
+        "set": {
+          "type": "current_ac",
+          "exp": null,
+          "input_number": {{channel_number}},
+          "PGA": 2,
+          "SPS": 3300
+        },
+        "conversion": {
+          "type": "power",
+          "args": {
+              "n_coil": {{values.n_coil}},
+              "n_samples": 80,
+              "ratio": {{values.ratio}},
+              "voltage": {{values.voltage}},
+              "offset": 0,
+              "vref": 2.048
+          }
+        }
+    }{{^last}}, {{/last}}
+    {{/values}}
+}
