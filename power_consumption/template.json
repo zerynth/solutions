@@ -185,6 +185,12 @@
                 "template": "net.template",
                 "folder":"",
                 "upload": false
+            },
+            {
+                "name":"dashboard.json",
+                "template": "dashboard.template",
+                "folder":"",
+                "upload": true
             }
         ]
     }

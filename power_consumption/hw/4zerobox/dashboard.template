@@ -1,0 +1,890 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 101,
+    "iteration": 1639646162411,
+    "links": [],
+    "panels": [
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 22,
+                "x": 2,
+                "y": 0
+            },
+            "id": 2,
+            "options": {
+                "content": "<div style=\\\"display:flex; text-align: right; font-size: 300%;\\\">\\n<p style=\\\"width:80%\\\">$title - Power Consumption</p>\\n<img style=\\\"height:88px;max-width:30%;margin-left: 20%\\\" src=\\\"https://www.zerynth.com/wp-content/uploads/2020/02/powered-by-zerynth_logo-e1581776506421.png\\\">\\n</div>",
+                "mode": "html"
+            },
+            "hideTimeOverride": true,
+            "pluginVersion": "7.1.0",
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "none",
+                    "rawQuery": false,
+                    "rawSql": "SELECT\\n  $__time(time_column),\\n  value1\\nFROM\\n  metric_table\\nWHERE\\n  $__timeFilter(time_column)\\n",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "decimals": 2,
+                    "mappings": [],
+                    "max": {{values.overall_max}},
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 50
+                            },
+                            {
+                                "color": "dark-orange",
+                                "value": 70
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 90
+                            }
+                        ]
+                    },
+                    "unit": "watth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 24,
+                "x": 0,
+                "y": 3
+            },
+            "id": 18,
+            "options": {
+                "displayMode": "lcd",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showUnfilled": true
+            },
+            "pluginVersion": "7.2.2",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct timestamp_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(timestamp_device)\\n)\\n\\nSELECT\\n  {{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/values.channels.current}} as overall\\nFROM filtered_data",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": "now/d",
+            "timeShift": null,
+            "title": "Overall Consumption - Today",
+            "transparent": true,
+            "type": "bargauge"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": null,
+                        "filterable": false
+                    },
+                    "decimals": 0,
+                    "mappings": [
+                        {
+                            "from": "",
+                            "id": 1,
+                            "text": "OFF",
+                            "to": "",
+                            "type": 1,
+                            "value": "0"
+                        },
+                        {
+                            "from": "",
+                            "id": 2,
+                            "text": "Running",
+                            "to": "",
+                            "type": 1,
+                            "value": "1"
+                        },
+                        {
+                            "from": "",
+                            "id": 3,
+                            "text": "High Consumption",
+                            "to": "",
+                            "type": 1,
+                            "value": "2"
+                        },
+                        {
+                            "from": "",
+                            "id": 4,
+                            "text": "Offline",
+                            "to": "",
+                            "type": 1,
+                            "value": "3"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "grey",
+                                "value": null
+                            },
+                            {
+                                "color": "green",
+                                "value": 1
+                            },
+                            {
+                                "color": "red",
+                                "value": 2
+                            },
+                            {
+                                "color": "grey",
+                                "value": 3
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 4,
+                "x": 0,
+                "y": 7
+            },
+            "hideTimeOverride": true,
+            "id": 17,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.2.2",
+            "targets": [
+                {{#values.channels.current}}
+                {
+                    "format": "table",
+                    "group": [],
+                    "hide": false,
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "with\\n  last_data as (\\n  SELECT\\n    MAX(timestamp_device),\\n    COUNT(payload) as data_num\\n  FROM data\\n  WHERE\\n    timestamp_device > timestamp $__timeTo() - interval '5m' AND\\n    device_id = '{{values.device_id}}'\\n),\\nlast_status as (\\n  SELECT\\n    CASE WHEN last_data.data_num>0 THEN COALESCE ((payloadf->'status')::integer, (payload->'status')::integer, 0) ELSE 3 END as s\\n  FROM condition,last_data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    tag = '{{tag}}'\\n  ORDER BY start DESC\\n  LIMIT 1\\n)\\n\\nSELECT last_status.s as \\\"{{name}}\\\"\\nFROM last_status",
+                    "refId": "{{channel}}",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+                {{^last}},{{/last}}
+                {{/values.channels.current}}
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Current Machine State",
+            "transparent": true,
+            "type": "stat"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 50
+                            },
+                            {
+                                "color": "dark-orange",
+                                "value": 70
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 90
+                            }
+                        ]
+                    },
+                    "unit": "watth"
+                },
+                "overrides": [
+                    {{#values.channels.current}}
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "{{name}} - Today"
+                        },
+                        "properties": [
+                            {
+                                "id": "min",
+                                "value": 0
+                            },
+                            {
+                                "id": "max",
+                                "value": {{max}}
+                            }
+                        ]
+                    }{{^last}}, {{/last}}
+                    {{/values.channels.current}}
+                ]
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 20,
+                "x": 4,
+                "y": 7
+            },
+            "hideTimeOverride": true,
+            "id": 4,
+            "options": {
+                "displayMode": "lcd",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showUnfilled": true
+            },
+            "pluginVersion": "7.2.2",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct timestamp_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(timestamp_device)\\n)\\n\\nSELECT\\n {{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) AS \\"{{name}} - Today\\" {{^last}}, {{/last}}\\n {{/values.channels.current}} FROM filtered_data",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": "now/d",
+            "timeShift": null,
+            "title": "",
+            "transparent": true,
+            "type": "bargauge"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": null,
+                        "filterable": false
+                    },
+                    "mappings": [],
+                    "max": 15,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "blue",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "watth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 18,
+                "x": 0,
+                "y": 18
+            },
+            "hideTimeOverride": true,
+            "id": 13,
+            "options": {
+                "displayMode": "lcd",
+                "orientation": "vertical",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": true
+                },
+                "showUnfilled": false
+            },
+            "pluginVersion": "7.2.2",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "WITH single_consumption AS (SELECT\\r\\n\\tDISTINCT timestamp_device AS time,\\r\\n\\t{{#values.channels.current}} ((payload->'{{channel}}')->>0)::float {{^last}} + {{/last}}\\n {{/values.channels.current}} AS channels_sum\\r\\n\\tFROM data\\r\\n\\tWHERE device_id ='{{values.device_id}}' AND \\r\\n\\ttimestamp_device BETWEEN timestamp $__timeFrom() -interval '6 day' AND timestamp $__timeTo())\\r\\n\\r\\nSELECT * FROM (\\r\\n     (SELECT (COALESCE(SUM(channels_sum),0)) AS \\"6 days ago\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '6 day' AND timestamp $__timeFrom()-interval '5 day') s1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\"5 days ago\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '5 day' AND timestamp $__timeFrom()-interval '4 day') s2 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\"4 days ago\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '4 day' AND timestamp $__timeFrom()-interval '3 day') s3 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\"3 days ago\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '3 day' AND timestamp $__timeFrom()-interval '2 day') s4 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\"2 days ago\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '2 day' AND timestamp $__timeFrom()-interval '1 day') s5 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\"yesterday\\"  FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '1 day'AND timestamp $__timeFrom()) s6 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\"today\\"      FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() AND timestamp $__timeTo()) s7 ON 1= 1\\r\\n)",
+                    "refId": "B",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": "now/d",
+            "timeShift": null,
+            "title": "Daily Consumption - Last 7 days",
+            "transparent": true,
+            "type": "bargauge"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": null,
+                        "filterable": false
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "min": 0,
+                    "noValue": "0",
+                    "max": {{values.overall_max}},
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 50
+                            },
+                            {
+                                "color": "dark-orange",
+                                "value": 70
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 90
+                            }
+                        ]
+                    },
+                    "unit": "watth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 6,
+                "x": 18,
+                "y": 18
+            },
+            "hideTimeOverride": true,
+            "id": 20,
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true
+            },
+            "pluginVersion": "7.2.2",
+            "targets": [
+                {
+                    "format": "table",
+                    "group": [],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct timestamp_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(timestamp_device)\\n)\\n\\nSELECT\\n  {{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/values.channels.current}} as overall\\nFROM filtered_data",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "timeFrom": "now/d",
+            "timeShift": null,
+            "title": "Power Consumption (kW/h) - Today",
+            "transparent": true,
+            "type": "gauge"
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 25
+            },
+            "hideTimeOverride": true,
+            "id": 22,
+            "panels": [],
+            "title": "Power Consumption - Timeseries",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "Overall": "blue"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 26
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": true,
+            "id": 6,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": true,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "connected",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.2.2",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\\n  timestamp_device as time,\\n  {{#values.channels.current}} ((payload->'{{channel}}')->>0)::float {{^last}} + {{/last}} {{/values.channels.current}} as \\\"Avg Overall\\\",\\n  {{#values.channels.current}} ((payload->'{{channel}}')->>1)::float {{^last}} + {{/last}} {{/values.channels.current}} as \\\"Min Overall\\\",\\n  {{#values.channels.current}} ((payload->'{{channel}}')->>2)::float {{^last}} + {{/last}} {{/values.channels.current}} as \\\"Max Overall\\\"\\nFROM data\\nWHERE\\n  $__timeFilter(timestamp_device) AND\\n  device_id = '{{values.device_id}}'",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Overall",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transparent": true,
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "kwatt",
+                    "label": null,
+                    "logBase": 1,
+                    "max": "5",
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {{#values.channels.current}}
+        {
+            "aliasColors": {
+                "{{name}}": "blue"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": {{y}}
+            },
+            "hiddenSeries": false,
+            "id": {{y}},
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": true,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "connected",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.2.2",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "format": "time_series",
+                    "group": [],
+                    "metricColumn": "none",
+                    "rawQuery": true,
+                    "rawSql": "SELECT\\n  timestamp_device as time,\\n  ((payload->'{{channel}}')->>0)::float as \\\"{{name}}\\\"\\nFROM data\\nWHERE\\n  $__timeFilter(timestamp_device) AND\\n  device_id = '{{values.device_id}}'\\nORDER BY timestamp_device ASC",
+                    "refId": "A",
+                    "select": [
+                        [
+                            {
+                                "params": [
+                                    "value"
+                                ],
+                                "type": "column"
+                            }
+                        ]
+                    ],
+                    "timeColumn": "time",
+                    "where": [
+                        {
+                            "name": "$__timeFilter",
+                            "params": [],
+                            "type": "macro"
+                        }
+                    ]
+                }
+            ],
+            "thresholds": [
+                {
+                    "colorMode": "critical",
+                    "fill": true,
+                    "line": true,
+                    "op": "gt",
+                    "value": {{max}},
+                    "yaxis": "left"
+                },
+                {
+                    "colorMode": "ok",
+                    "fill": false,
+                    "line": true,
+                    "op": "lt",
+                    "value": {{min}},
+                    "yaxis": "left"
+                }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "{{name}}",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transparent": true,
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "kwatt",
+                    "label": null,
+                    "logBase": 1,
+                    "max": "{{y_domain}}",
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        }{{^last}}, {{/last}}
+        {{/values.channels.current}}
+    ],
+    "refresh": "5s",
+    "schemaVersion": 26,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "current": {
+                    "selected": false,
+                    "text": "{{values.title}}",
+                    "value": "{{values.title}}"
+                },
+                "hide": 2,
+                "label": null,
+                "name": "title",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "{{values.title}}",
+                        "value": "{{values.title}}"
+                    }
+                ],
+                "query": "{{values.title}}",
+                "skipUrlSync": false,
+                "type": "constant"
+            }
+        ]
+    },
+    "time": {
+        "from": "now/d",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Power Consumption - solution",
+    "uid": "1KiJMtMz1",
+    "version": 51
+}
