@@ -88,8 +88,8 @@
                 {
                     "id": "current_range",
                     "label": {
-                        "eng": "Current Range (kW)",
-                        "ita": "Range di Corrente (kW)"
+                        "eng": "Current Range (A)",
+                        "ita": "Range di Corrente (A)"
                     },
                     "type": "select",
                     "options": [
@@ -132,8 +132,8 @@
                 {
                     "id": "upper_alarm_threshold",
                     "label": {
-                        "eng": "Max Current Alarm Threshold (kW)",
-                        "ita": "Soglia Allarme Corrente Max. (kW)"
+                        "eng": "Max Power Alarm Threshold (kW)",
+                        "ita": "Soglia Allarme Potenza Max. (kW)"
                     },
                     "type": "number",
                     "required": true
@@ -141,8 +141,8 @@
                 {
                     "id": "lower_alarm_threshold",
                     "label": {
-                        "ita": "Consumo Macchina Spenta (kW)",
-                        "eng": "Machine Off Current Consumption (kW)"
+                        "ita": "Assorbimento Macchina Spenta (kW)",
+                        "eng": "Machine Off Power Absorption (kW)"
                     },
                     "type": "number",
                     "min": 3,
