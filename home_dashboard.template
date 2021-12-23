@@ -35,7 +35,7 @@
             },
             "id": 2,
             "options": {
-                "content": "<div style=\\\"display:flex; text-align: right; font-size: 300%;\\\">\\n<p style=\\\"width:80%\\\">{{values.solution_name}} - Power Consumption</p>\\n<img style=\\\"height:88px;max-width:30%;margin-left: 20%\\\" src=\\\"https://www.zerynth.com/wp-content/uploads/2020/02/powered-by-zerynth_logo-e1581776506421.png\\\">\\n</div>",
+                "content": "<div style=\"display:flex; text-align: right; font-size: 300%;\">\n<p style=\"width:80%\">{{values.solution_name}} - Power Consumption</p>\n<img style=\"height:88px;max-width:30%;margin-left: 20%\" src=\"https://www.zerynth.com/wp-content/uploads/2020/02/powered-by-zerynth_logo-e1581776506421.png\">\n</div>",
                 "mode": "html"
             },
             "pluginVersion": "7.1.0",
@@ -45,7 +45,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": false,
-                    "rawSql": "SELECT\\n  $__time(time_column),\\n  value1\\nFROM\\n  metric_table\\nWHERE\\n  $__timeFilter(time_column)\\n",
+                    "rawSql": "SELECT\n  $__time(time_column),\n  value1\nFROM\n  metric_table\nWHERE\n  $__timeFilter(time_column)\n",
                     "refId": "A",
                     "select": [
                         [
@@ -138,7 +138,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "WITH single_consumption AS (SELECT\\r\\n\\tDISTINCT ts_device AS time,\\r\\n\\t{{#channels.current}} ((payload->'{{channel}}')->>0)::float {{^last}} + {{/last}}\\n {{/channels.current}} AS channels_sum\\r\\n\\tFROM data\\r\\n\\tWHERE device_id ='{{id}}' AND\\r\\n\\tts_device BETWEEN timestamp $__timeFrom() -interval '6 day' AND timestamp $__timeTo())\\r\\n\\r\\nSELECT * FROM (\\r\\n     (SELECT (COALESCE(SUM(channels_sum),0)) AS \\\"6 days ago\\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '6 day' AND timestamp $__timeFrom()-interval '5 day') s1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\\"5 days ago\\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '5 day' AND timestamp $__timeFrom()-interval '4 day') s2 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\\"4 days ago\\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '4 day' AND timestamp $__timeFrom()-interval '3 day') s3 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\\"3 days ago\\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '3 day' AND timestamp $__timeFrom()-interval '2 day') s4 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\\"2 days ago\\\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '2 day' AND timestamp $__timeFrom()-interval '1 day') s5 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\\"yesterday\\\"  FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '1 day'AND timestamp $__timeFrom()) s6 ON 1= 1\\r\\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \\\"today\\\"      FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() AND timestamp $__timeTo()) s7 ON 1= 1\\r\\n)",
+                    "rawSql": "WITH single_consumption AS (SELECT\r\n\tDISTINCT ts_device AS time,\r\n\t{{#channels.current}} ((payload->'{{channel}}')->>0)::float {{^last}} + {{/last}}\n {{/channels.current}} AS channels_sum\r\n\tFROM data\r\n\tWHERE device_id ='{{id}}' AND\r\n\tts_device BETWEEN timestamp $__timeFrom() -interval '6 day' AND timestamp $__timeTo())\r\n\r\nSELECT * FROM (\r\n     (SELECT (COALESCE(SUM(channels_sum),0)) AS \"6 days ago\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '6 day' AND timestamp $__timeFrom()-interval '5 day') s1\r\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \"5 days ago\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '5 day' AND timestamp $__timeFrom()-interval '4 day') s2 ON 1= 1\r\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \"4 days ago\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '4 day' AND timestamp $__timeFrom()-interval '3 day') s3 ON 1= 1\r\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \"3 days ago\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '3 day' AND timestamp $__timeFrom()-interval '2 day') s4 ON 1= 1\r\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \"2 days ago\" FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '2 day' AND timestamp $__timeFrom()-interval '1 day') s5 ON 1= 1\r\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \"yesterday\"  FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() -interval '1 day'AND timestamp $__timeFrom()) s6 ON 1= 1\r\nJOIN (SELECT (COALESCE(SUM(channels_sum),0)) AS \"today\"      FROM single_consumption WHERE time BETWEEN timestamp $__timeFrom() AND timestamp $__timeTo()) s7 ON 1= 1\r\n)",
                     "refId": "A",
                     "select": [
                         [
@@ -237,7 +237,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct ts_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{id}}' AND\\n    $__timeFilter(ts_device)\\n)\\n\\nSELECT\\n  COALESCE({{#channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/channels.current}}, 0) as overall\\nFROM filtered_data",
+                    "rawSql": "with filtered_data as (\n  SELECT\n    distinct ts_device,\n    payload\n  FROM data\n  WHERE\n    device_id = '{{id}}' AND\n    $__timeFilter(ts_device)\n)\n\nSELECT\n  COALESCE({{#channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/channels.current}}, 0) as overall\nFROM filtered_data",
                     "refId": "A",
                     "select": [
                         [
