@@ -187,6 +187,12 @@
                 "upload": false
             },
             {
+                "name":"home_dashboard.json",
+                "template": "home_dashboard.template",
+                "folder":"",
+                "upload": true
+            },
+            {
                 "name":"dashboard.json",
                 "template": "dashboard.template",
                 "folder":"",
