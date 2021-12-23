@@ -32,15 +32,6 @@
     ],
     "device": [
         {
-            "id": "machine_name",
-            "label": {
-                "eng": "Machine name",
-                "ita": "Nome macchinario"
-            },
-            "type": "text",
-            "required": true
-        },
-        {
             "id": "description",
             "label": {
                 "eng": "Machine description",
@@ -79,8 +70,8 @@
                 {
                     "id": "name",
                     "label": {
-                        "eng": "Name",
-                        "ita": "Nome"
+                        "eng": "Machine Name",
+                        "ita": "Nome Macchinario"
                     },
                     "type": "text",
                     "required": true
@@ -141,8 +132,8 @@
                 {
                     "id": "lower_alarm_threshold",
                     "label": {
-                        "ita": "Assorbimento Macchina Spenta (kW)",
-                        "eng": "Machine Off Power Absorption (kW)"
+                        "ita": "Consumo Macchina Spenta (kW)",
+                        "eng": "Machine Off Current Consumption (kW)"
                     },
                     "type": "number",
                     "min": 3,
@@ -200,5 +191,4 @@
             }
         ]
     }
-
 }
