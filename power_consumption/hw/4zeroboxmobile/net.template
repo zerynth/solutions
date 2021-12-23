@@ -1,0 +1,62 @@
+{{#values}}
+{
+    "interfaces": [
+        {
+            {{#values.is_wifi}}
+            "type":"wifi",
+            {{/values.is_wifi}}
+            {{^values.is_wifi}}
+            "type": "gsm",
+            {{/values.is_wifi}}
+            {{#values.is_wifi}}
+            "config":[
+                {
+                    "ssid": {{values.main_ssid}}",
+                    "password": "{{values.main_password}}",
+                    {{#values.is_dhcp}}
+                    "dhcp": 1,
+                    "params": {}
+                    {{/values.is_dhcp}}
+                    {{^values.is_dhcp}}
+                    "dhcp": 0,
+                    "params": {
+                        "ip": {{values.ip}},
+                        "mask": {{values.mask}},
+                        "gateway": {{values.gateway}},
+                        "dns1": {{values.dns1}},
+                        "dns2": {{values.dns2}}
+                    }
+                    {{/values.is_dhcp}}
+                },
+                {
+                    "ssid": "{{values.backup_ssid}}",
+                    "password": "{{values.backup_password}}",
+                    {{#values.is_dhcp}}
+                    "dhcp": 1,
+                    "params": {}
+                    {{/values.is_dhcp}}
+                    {{^values.is_dhcp}}
+                    "dhcp": 0,
+                    "params": {
+                        "ip": {{values.ip}},
+                        "mask": {{values.mask}},
+                        "gateway": {{values.gateway}},
+                        "dns1": {{values.dns1}},
+                        "dns2": {{values.dns2}}
+                    }
+                    {{/values.is_dhcp}}
+                }
+            ]
+            {{/values.is_wifi}}
+            {{^values.is_wifi}}
+            "config":[]
+            {{/values.is_wifi}}
+        }
+    ],
+    "defaults": {
+        {{#values.is_wifi}}
+        "zmqtt.zdm.test.zerynth.com": "wifi"
+        {{/values.is_wifi}}
+    }
+}
+{{/values}}
