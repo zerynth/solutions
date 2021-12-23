@@ -1,4 +1,4 @@
-{
+const dashboardTemplate = `{
     "annotations": {
         "list": [
             {
@@ -81,7 +81,7 @@
                     "custom": {},
                     "decimals": 2,
                     "mappings": [],
-                    "max": {{values.overall_max}},
+                    "max": {{values.overall_max_d}},
                     "thresholds": {
                         "mode": "percentage",
                         "steps": [
@@ -137,7 +137,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct ts_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(ts_device)\\n)\\n\\nSELECT\\n  {{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/values.channels.current}} as overall\\nFROM filtered_data",
+                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct ts_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(ts_device)\\n)\\n\\nSELECT\\n  COALESCE({{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/values.channels.current}}, 0) as overall\\nFROM filtered_data",
                     "refId": "A",
                     "select": [
                         [
@@ -161,7 +161,7 @@
             ],
             "timeFrom": "now/d",
             "timeShift": null,
-            "title": "Overall Consumption - Today",
+            "title": "Power Consumption (Overall)",
             "transparent": true,
             "type": "bargauge"
         },
@@ -290,7 +290,7 @@
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Current Machine State",
+            "title": "Machine State",
             "transparent": true,
             "type": "stat"
         },
@@ -332,7 +332,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "{{name}} - Today"
+                            "options": "{{name}}"
                         },
                         "properties": [
                             {
@@ -375,7 +375,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct ts_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(ts_device)\\n)\\n\\nSELECT\\n {{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) AS \\"{{name}} - Today\\" {{^last}}, {{/last}}\\n {{/values.channels.current}} FROM filtered_data",
+                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct ts_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(ts_device)\\n)\\n\\nSELECT\\n {{#values.channels.current}} COALESCE(SUM(((payload->'{{channel}}')->>0)::float), 0) AS {{name}} {{^last}}, {{/last}}\\n {{/values.channels.current}} FROM filtered_data",
                     "refId": "A",
                     "select": [
                         [
@@ -412,7 +412,7 @@
                         "filterable": false
                     },
                     "mappings": [],
-                    "max": 15,
+                    "max": {{values.overall_max_d}},
                     "thresholds": {
                         "mode": "absolute",
                         "steps": [
@@ -550,7 +550,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct ts_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(ts_device)\\n)\\n\\nSELECT\\n  {{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/values.channels.current}} as overall\\nFROM filtered_data",
+                    "rawSql": "with filtered_data as (\\n  SELECT\\n    distinct ts_device,\\n    payload\\n  FROM data\\n  WHERE\\n    device_id = '{{values.device_id}}' AND\\n    $__timeFilter(ts_device)\\n)\\n\\nSELECT\\n  COALESCE({{#values.channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/values.channels.current}}, 0) as overall\\nFROM filtered_data",
                     "refId": "A",
                     "select": [
                         [
@@ -694,7 +694,7 @@
                     "format": "kwatt",
                     "label": null,
                     "logBase": 1,
-                    "max": "5",
+                    "max": {{values.overall_max_y_domain}},
                     "min": null,
                     "show": true
                 },
@@ -887,4 +887,6 @@
     "title": "Power Consumption - solution",
     "uid": "1KiJMtMz1",
     "version": 51
-}
+}`;
+
+export default dashboardTemplate;
