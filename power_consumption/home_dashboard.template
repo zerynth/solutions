@@ -237,7 +237,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "with filtered_data as (\n  SELECT\n    distinct ts_device,\n    payload\n  FROM data\n  WHERE\n    device_id = '{{id}}' AND\n    $__timeFilter(ts_device)\n)\n\nSELECT\n  COALESCE({{#channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/channels.current}}, 0) as overall\nFROM filtered_data",
+                    "rawSql": "with filtered_d as (\n  SELECT\n    distinct ts_device,\n    payload\n  FROM data\n  WHERE\n    device_id = '{{id}}' AND\n    $__timeFilter(ts_device)\n)\n\nSELECT\n  COALESCE({{#channels.current}} SUM(((payload->'{{channel}}')->>0)::float) {{^last}} + {{/last}} {{/channels.current}}, 0) as overall\nFROM filtered_d",
                     "refId": "A",
                     "select": [
                         [
