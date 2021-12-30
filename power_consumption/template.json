@@ -19,15 +19,6 @@
             },
             "type": "text",
             "required": true
-        },
-        {
-            "id": "alarm_email",
-            "label": {
-                "eng": "Alarm e-mail",
-                "ita": "Indirizzo e-mail allarmi"
-            },
-            "type": "text",
-            "required": false
         }
     ],
     "device": [
