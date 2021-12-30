@@ -264,7 +264,7 @@
                     "hide": false,
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "with\n  last_d as (\n  SELECT\n    MAX(ts_device),\n    COUNT(payload) as d_num\n  FROM data\n  WHERE\n    ts_device > timestamp $__timeTo() - interval '5m' AND\n    device_id = '{{values.device_id}}'\n),\nlast_status as (\n  SELECT\n    CASE WHEN last_d.d_num>0 THEN COALESCE ((payloadf->'status')::integer, (payload->'status')::integer, 0) ELSE 3 END as s\n  FROM condition,last_d\n  WHERE\n    device_id = '{{values.device_id}}' AND\n    tag = '{{tag}}'\n  ORDER BY start DESC\n  LIMIT 1\n)\n\nSELECT last_status.s as \"{{name}}\"\nFROM last_status",
+                    "rawSql": "with\n  last_d as (\n  SELECT\n    MAX(ts_device),\n    COUNT(payload) as d_num\n  FROM data\n  WHERE\n    ts_device > timestamp $__timeTo() - interval '5m' AND\n    device_id = '{{values.device_id}}'\n),\nlast_status as (\n  SELECT\n    CASE WHEN last_d.d_num>0 THEN COALESCE ((payloadf->'status')::integer, (payload->'status')::integer, 0) ELSE 3 END as s\n  FROM conditions,last_d\n  WHERE\n    device_id = '{{values.device_id}}' AND\n    tag = '{{tag}}'\n  ORDER BY start DESC\n  LIMIT 1\n)\n\nSELECT last_status.s as \"{{name}}\"\nFROM last_status",
                     "refId": "{{channel}}",
                     "select": [
                         [
